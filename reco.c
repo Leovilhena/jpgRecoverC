@@ -39,8 +39,9 @@ int main(void)
     int stream = 0;
     
     // interate til end of the file
-    while(fread(&buffer, sizeof(buffer), 1, card) == sizeof(buffer))
+    while(stream == 0)
     {
+
         // if found a jpg signature
         if(comp(buffer) == true)
         {
@@ -79,9 +80,6 @@ int main(void)
             fread(&buffer, sizeof(buffer), 1, card);
         }
     }
-    
-    // NEED TO CLOSE OUT FILE FOR THE LAST FOUND JPG
-    // fclose(out);
     
     // see ya later alligator!
     fclose(card);
