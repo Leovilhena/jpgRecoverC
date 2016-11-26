@@ -72,6 +72,12 @@ int main(void)
                     fclose(out);
                     stream = 0;
                 }
+                else if(feof(card))
+                {
+                    fclose(out);
+                    break;
+                }
+                    
             }
         }
         else
