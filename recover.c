@@ -41,7 +41,6 @@ int main(void)
     // interate til end of the file
     while(stream == 0)
     {
-
         // if found a jpg signature
         if(comp(buffer) == true)
         {
@@ -60,19 +59,21 @@ int main(void)
             // while file is open
             while(stream == 1) 
             {
+                //read and write
                 fread(&buffer, sizeof(buffer), 1, card);
                 fwrite(&buffer, sizeof(buffer), 1, out);
                 
                 // check for another jpg signature
                 if(comp(buffer) == true)
                 {
+                    //file counter
                     jcounter++;
                     
                     // outstream and file are closed
                     fclose(out);
                     stream = 0;
                 }
-                else if(feof(card))
+                else if(feof(card)) //if reaches end of file, close out stream and break
                 {
                     fclose(out);
                     break;
