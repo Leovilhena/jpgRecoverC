@@ -26,8 +26,8 @@ int main(void)
         return 1;
     }
     
-    // buffer array
-    char buffer[512]; 
+    // buffer array initialize with 0's for first comp() function check
+    char buffer[512] = "0000";
     
     // jpg found counter
     int jcounter = 0;
@@ -49,6 +49,12 @@ int main(void)
             
             // open the file for writting
             FILE* out = fopen(title, "w");
+            if (out == NULL)
+            {
+                fclose(out);
+                fprintf(stderr, "Could not create %s.\n", title);
+                return 2;
+            }
             
             // outfile stream is open
             stream = 1; 
@@ -61,7 +67,6 @@ int main(void)
             {
                 //read and write
                 fread(&buffer, sizeof(buffer), 1, card);
-                fwrite(&buffer, sizeof(buffer), 1, out);
                 
                 // check for another jpg signature
                 if(comp(buffer) == true)
@@ -78,6 +83,8 @@ int main(void)
                     fclose(out);
                     break;
                 }
+                else
+                    fwrite(&buffer, sizeof(buffer), 1, out);
                     
             }
         }
@@ -91,6 +98,7 @@ int main(void)
     // see ya later alligator!
     fclose(card);
     
+    return 0;
 }
 
 /** function that checks if 4 bytes from buffer are the same as jpg's signature
@@ -98,15 +106,21 @@ int main(void)
  */
 bool comp(char* b)
 {
+    if(b == NULL)
+    {
+        return false;
+    }
+ 
     // jpg's signature (MagicNumber)
     char n1[4] = {0xff, 0xd8, 0xff, 0xe0};
     char n2[4] = {0xff, 0xd8, 0xff, 0xe1};
-    
+
     // condition to check if we have a jpg signature!
     if(memcmp(b, n1, 4) == 0 || memcmp(b, n2, 4) == 0)
     {
         return true;
     }
     else
+
         return false;
 }
